@@ -1,0 +1,19 @@
+{
+  "name": "gitlazy",
+  "version": "0.1.0",
+  "description": "A series of lazy git commands",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/terryx/gitlazy.git"
+  },
+  "author": "Terry Yuen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/terryx/gitlazy/issues"
+  },
+  "homepage": "https://github.com/terryx/gitlazy#readme"
+}
