@@ -8,11 +8,12 @@ const push = (yarg) => {
     .then(argv => getCurrentBranch(argv))
     .then(currentBranch => {
       if (currentBranch === 'master' || currentBranch === 'develop') {
-        throw (new Error(`Cannot push directly to ${currentBranch} branch`))
+        throw new Error(`Cannot push directly to ${currentBranch} branch`)
       }
 
       execSync(`git push origin ${currentBranch}`)
     })
+    .catch(err => console.error(err.message))
 }
 
 yargs
