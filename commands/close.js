@@ -5,7 +5,7 @@ const { getCurrentBranch } = require('../utils/branch')
 const close = (yarg) => {
   return Promise
     .resolve(yarg.argv)
-    .then(argv => getCurrentBranch)
+    .then(argv => getCurrentBranch(argv))
     .then(currentBranch => {
       if (currentBranch === 'master' || currentBranch === 'develop') {
         throw (new Error(`Cannot finish a ${currentBranch} branch`))
