@@ -15,7 +15,7 @@ const feature = (yarg) => {
         fromBranch = argv._[2]
       }
 
-      execSync(`git checkout -b ${destBranch} ${fromBranch}`)
+      execSync(`git checkout -b feature/${destBranch} ${fromBranch}`)
     })
     .catch(err => console.error(err.message))
 }
