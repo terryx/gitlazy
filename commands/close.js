@@ -1,24 +1,31 @@
 const yargs = require('yargs')
-const { execSync } = require('child_process')
+const config = require('../config.json')
 const { getCurrentBranch } = require('../utils/branch')
+const { run } = require('../utils/command')
+
+const validateBranch = (currentBranch) => {
+  if (currentBranch === config.develop || currentBranch === config.release) {
+    throw (new Error(`Cannot close a ${currentBranch} branch`))
+  }
+
+  return Promise.resolve(currentBranch)
+}
 
 const close = (yarg) => {
-  return Promise
-    .resolve(yarg.argv)
+  let currentBranch = null
+
+  Promise.resolve(yarg.argv)
     .then(argv => getCurrentBranch(argv))
-    .then(currentBranch => {
-      if (currentBranch === 'master' || currentBranch === 'develop') {
-        throw (new Error(`Cannot finish a ${currentBranch} branch`))
-      }
-
-      execSync(`git checkout develop`)
-      execSync(`git branch -d ${currentBranch}`)
-      execSync(`git push origin --delete ${currentBranch}`)
-      execSync(`git pull origin develop`)
-      execSync(`git remote prune origin`)
-
-      return console.info(`${currentBranch} is closed`)
+    .then(branchName => validateBranch(branchName))
+    .then(branchName => {
+      currentBranch = branchName
+      return Promise.resolve(branchName)
     })
+    .then(branchName => run(`git checkout ${config.develop}`))
+    .then(branchName => run(`git branch -D ${currentBranch}`))
+    .then(() => run(`git pull origin ${config.develop}`))
+    .then(() => run(`git remote prune origin`))
+    .then(response => console.info(response))
     .catch(err => console.error(err.message))
 }
 
